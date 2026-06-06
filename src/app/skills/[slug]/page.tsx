@@ -10,6 +10,26 @@ import {
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
+const getEmbedUrl = (url?: string) => {
+  if (!url) return '';
+  if (url.includes('youtube.com/embed/')) return url;
+  if (url.includes('youtube.com/watch?v=')) {
+    try {
+      const urlObj = new URL(url);
+      const videoId = urlObj.searchParams.get('v');
+      return `https://www.youtube.com/embed/${videoId}`;
+    } catch (e) {
+      return '';
+    }
+  }
+  if (url.includes('youtu.be/')) {
+    const parts = url.split('/');
+    const videoId = parts[parts.length - 1]?.split('?')[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  return url;
+};
+
 export default function SkillDetailPage() {
   const { slug } = useParams();
   const router = useRouter();
@@ -187,9 +207,50 @@ export default function SkillDetailPage() {
 
         {/* Main Details (Markdown content) */}
         <div className="border-t border-white/5 pt-6 space-y-6">
-          <div className="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed">
+          <div className="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed
+            prose-headings:text-white prose-headings:font-bold prose-headings:mt-6 prose-headings:mb-3
+            prose-h2:text-lg prose-h2:border-b prose-h2:border-white/5 prose-h2:pb-1 prose-h2:text-slate-200
+            prose-h3:text-sm prose-h3:text-slate-300
+            prose-p:leading-relaxed prose-p:my-2
+            prose-ul:list-disc prose-ul:pl-5 prose-ul:my-2
+            prose-li:my-1
+            prose-code:text-rose-300 prose-code:bg-white/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs
+            prose-pre:bg-slate-950/80 prose-pre:border prose-pre:border-white/5 prose-pre:p-4 prose-pre:rounded-xl prose-pre:my-3">
             <ReactMarkdown>{node.content_markdown}</ReactMarkdown>
           </div>
+
+          {/* Video Section */}
+          {node.video_url ? (
+            <div className="rounded-2xl border border-white/5 bg-slate-950/40 p-5 space-y-3">
+              <h4 className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-sky-400">
+                <BookOpen className="h-4.5 w-4.5" />
+                <span>Begleitendes Erklärvideo</span>
+              </h4>
+              <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-slate-900 shadow-lg">
+                <iframe
+                  src={getEmbedUrl(node.video_url)}
+                  title={`Erklärvideo zu ${node.title}`}
+                  className="absolute inset-0 h-full w-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-white/5 bg-slate-950/40 p-5 space-y-3">
+              <h4 className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+                <BookOpen className="h-4.5 w-4.5" />
+                <span>Erklärvideo (In Vorbereitung)</span>
+              </h4>
+              <div className="flex aspect-video w-full flex-col items-center justify-center rounded-xl border border-dashed border-white/5 bg-slate-900/50 p-6 text-center space-y-2">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-800 text-slate-500">
+                  <ExternalLink className="h-6 w-6" />
+                </div>
+                <span className="text-xs font-semibold text-slate-300">Video für diese Kompetenz wird bald produziert</span>
+                <p className="text-[10px] text-slate-500 max-w-sm">Unsere Coaches arbeiten an einem kurzen Screencast, der dir das Prinzip für diesen Schritt live demonstriert.</p>
+              </div>
+            </div>
+          )}
 
           {/* Mini-Practice Task Section */}
           {node.practice_task && (

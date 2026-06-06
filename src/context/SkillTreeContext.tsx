@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { dbClient, SkillNode, SkillEdge, ProjectPath, NodeVersion } from '../lib/dbClient';
+import { dataClient, SkillNode, SkillEdge, ProjectPath } from '../lib/dataClient';
 
 type NodeState = 'locked' | 'unlocked' | 'in_progress' | 'completed';
 
@@ -28,30 +28,14 @@ interface SkillTreeContextType {
   setSearchQuery: (query: string) => void;
   resetFilters: () => void;
   
-  // Admin Mode
-  adminMode: boolean;
-  setAdminMode: (mode: boolean) => void;
-  
   // Loading states
   loading: boolean;
   error: string | null;
   
   // Operations
-  refreshData: () => Promise<void>;
-  updateNodeState: (nodeId: string, state: NodeState) => Promise<void>;
-  toggleNodeCompletion: (nodeId: string) => Promise<void>;
-  
-  // CRUD
-  saveNode: (id: string, data: Partial<SkillNode>, changeNote: string) => Promise<void>;
-  createNode: (data: Omit<SkillNode, 'id'>) => Promise<void>;
-  deleteNode: (id: string) => Promise<void>;
-  saveEdge: (data: Omit<SkillEdge, 'id'>) => Promise<void>;
-  deleteEdge: (id: string) => Promise<void>;
-  saveProject: (id: string, data: Partial<ProjectPath>) => Promise<void>;
-  
-  // Versions
-  getNodeVersions: (nodeId: string) => Promise<NodeVersion[]>;
-  restoreNodeVersion: (versionId: string) => Promise<void>;
+  refreshData: () => void;
+  updateNodeState: (nodeId: string, state: NodeState) => void;
+  toggleNodeCompletion: (nodeId: string) => void;
 }
 
 const SkillTreeContext = createContext<SkillTreeContextType | undefined>(undefined);
@@ -69,42 +53,9 @@ export const SkillTreeProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [levelFilter, setLevelFilter] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [adminMode, setAdminMode] = useState<boolean>(false);
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Load all nodes, edges, projects, and states from DB
-  const refreshData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [allNodes, allEdges, allProjects, savedStates] = await Promise.all([
-        dbClient.getNodes(),
-        dbClient.getEdges(),
-        dbClient.getProjects(),
-        dbClient.getCompletionStates(),
-      ]);
-      
-      setNodes(allNodes);
-      setEdges(allEdges);
-      setProjects(allProjects);
-      
-      // Auto propagate completion states to ensure lock/unlock consistency on load
-      const propagatedStates = propagateStates(allNodes, allEdges, savedStates);
-      setCompletionStates(propagatedStates);
-      
-      setError(null);
-    } catch (err: any) {
-      console.error('Failed to load skilltree data:', err);
-      setError('Fehler beim Laden der Skilltree-Daten. Bitte lade die Seite neu.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    refreshData();
-  }, [refreshData]);
 
   // Recalculates locked/unlocked states based on prerequisites
   const propagateStates = (
@@ -172,15 +123,45 @@ export const SkillTreeProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return updatedStates;
   };
 
+  // Load all data (synchronous from seedData, only completion from LocalStorage)
+  const refreshData = useCallback(() => {
+    try {
+      setLoading(true);
+      const allNodes = dataClient.getNodes();
+      const allEdges = dataClient.getEdges();
+      const allProjects = dataClient.getProjects();
+      const savedStates = dataClient.getCompletionStates();
+      
+      setNodes(allNodes);
+      setEdges(allEdges);
+      setProjects(allProjects);
+      
+      // Auto propagate completion states to ensure lock/unlock consistency on load
+      const propagatedStates = propagateStates(allNodes, allEdges, savedStates);
+      setCompletionStates(propagatedStates);
+      
+      setError(null);
+    } catch (err: any) {
+      console.error('Failed to load skilltree data:', err);
+      setError('Fehler beim Laden der Skilltree-Daten. Bitte lade die Seite neu.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
+
   // Update a single node state, then propagate locking/unlocking downstream
-  const updateNodeState = async (nodeId: string, state: NodeState) => {
+  const updateNodeState = (nodeId: string, state: NodeState) => {
     const nextStates = { ...completionStates, [nodeId]: state };
     const propagated = propagateStates(nodes, edges, nextStates);
     setCompletionStates(propagated);
-    await dbClient.saveCompletionStates(propagated);
+    dataClient.saveCompletionStates(propagated);
   };
 
-  const toggleNodeCompletion = async (nodeId: string) => {
+  const toggleNodeCompletion = (nodeId: string) => {
     const currentState = completionStates[nodeId] || 'locked';
     if (currentState === 'locked') return; // Cannot toggle locked nodes
     
@@ -189,83 +170,7 @@ export const SkillTreeProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     else if (currentState === 'in_progress') nextState = 'completed';
     else if (currentState === 'completed') nextState = 'unlocked';
     
-    await updateNodeState(nodeId, nextState);
-  };
-
-  // CRUD Wrapper Operations
-  const saveNode = async (id: string, data: Partial<SkillNode>, changeNote: string) => {
-    try {
-      await dbClient.updateNode(id, data, changeNote);
-      await refreshData();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Fehler beim Speichern des Knotens.');
-    }
-  };
-
-  const createNode = async (data: Omit<SkillNode, 'id'>) => {
-    try {
-      await dbClient.createNode(data);
-      await refreshData();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Fehler beim Erstellen des Knotens.');
-    }
-  };
-
-  const deleteNode = async (id: string) => {
-    try {
-      await dbClient.deleteNode(id);
-      if (selectedNodeId === id) setSelectedNodeId(null);
-      await refreshData();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Fehler beim Löschen des Knotens.');
-    }
-  };
-
-  const saveEdge = async (data: Omit<SkillEdge, 'id'>) => {
-    try {
-      await dbClient.createEdge(data);
-      await refreshData();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Fehler beim Erstellen der Verbindung.');
-    }
-  };
-
-  const deleteEdge = async (id: string) => {
-    try {
-      await dbClient.deleteEdge(id);
-      await refreshData();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Fehler beim Löschen der Verbindung.');
-    }
-  };
-
-  const saveProject = async (id: string, data: Partial<ProjectPath>) => {
-    try {
-      await dbClient.updateProject(id, data);
-      await refreshData();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Fehler beim Speichern des Projekts.');
-    }
-  };
-
-  const getNodeVersions = async (nodeId: string): Promise<NodeVersion[]> => {
-    return await dbClient.getNodeVersions(nodeId);
-  };
-
-  const restoreNodeVersion = async (versionId: string) => {
-    try {
-      await dbClient.restoreNodeVersion(versionId);
-      await refreshData();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Fehler beim Wiederherstellen der Version.');
-    }
+    updateNodeState(nodeId, nextState);
   };
 
   const resetFilters = () => {
@@ -297,25 +202,12 @@ export const SkillTreeProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setSearchQuery,
         resetFilters,
         
-        adminMode,
-        setAdminMode,
-        
         loading,
         error,
         
         refreshData,
         updateNodeState,
         toggleNodeCompletion,
-        
-        saveNode,
-        createNode,
-        deleteNode,
-        saveEdge,
-        deleteEdge,
-        saveProject,
-        
-        getNodeVersions,
-        restoreNodeVersion
       }}
     >
       {children}

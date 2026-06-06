@@ -120,7 +120,7 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ id, data }) => {
     <div
       onMouseEnter={() => setHoveredNodeId(id)}
       onMouseLeave={() => setHoveredNodeId(null)}
-      className={`glass-card relative flex w-52 flex-col rounded-2xl p-3.5 transition-all duration-300 ${stateClasses} ${borderClass} ${shadowClass} ${projectHighlightClass}`}
+      className={`glass-card relative flex w-64 flex-col rounded-2xl p-4 transition-all duration-300 ${stateClasses} ${borderClass} ${shadowClass} ${projectHighlightClass}`}
     >
       {/* Handles for connections */}
       {id !== 'kickoff' && (
@@ -161,12 +161,12 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ id, data }) => {
       </div>
 
       {/* Main Title */}
-      <h3 className="mt-2 text-xs font-extrabold tracking-wide text-white line-clamp-1">
+      <h3 className="mt-2 text-xs font-extrabold tracking-wide text-white line-clamp-2 leading-snug">
         {data.title}
       </h3>
       
       {/* Brief Summary */}
-      <p className="mt-1 text-[10px] text-slate-400 line-clamp-2 leading-relaxed">
+      <p className="mt-1.5 text-[10px] text-slate-400 line-clamp-3 leading-relaxed">
         {data.summary}
       </p>
 

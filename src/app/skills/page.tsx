@@ -64,7 +64,7 @@ export default function SkillsPage() {
       <div>
         <h1 className="text-3xl font-extrabold tracking-tight text-white">Kompetenzübersicht</h1>
         <p className="mt-2 text-sm text-slate-400">
-          Suche und filtere alle Skills aus dem CAS/SAS Learning App Design.
+          Suche und filtere alle Skills des Skilltrees.
         </p>
       </div>
 

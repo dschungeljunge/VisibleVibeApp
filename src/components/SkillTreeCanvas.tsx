@@ -6,17 +6,44 @@ import {
   Background, 
   Controls, 
   MiniMap, 
-  Connection, 
-  Edge,
-  MarkerType
+  MarkerType,
+  NodeProps
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useSkillTree } from '../context/SkillTreeContext';
 import { CustomNode } from './CustomNode';
-import { Sparkles, Layers, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
+
+// Stage label column width matches the X step between node levels (380px)
+const STAGE_STEP_X = 380;
+const STAGE_START_X = 80; // first node X (kickoff)
+const NUM_STAGES = 9;
+
+// Special node type for stage column headers rendered in canvas space
+const StageLabelNode: React.FC<NodeProps> = ({ data }) => {
+  return (
+    <div
+      style={{ width: STAGE_STEP_X, pointerEvents: 'none', userSelect: 'none' }}
+      className="flex flex-col items-center"
+    >
+      {/* Vertical line */}
+      <div className="w-px bg-white/5" style={{ height: 2000 }} />
+      {/* Label pill */}
+      <div
+        className="absolute top-0 left-0 right-0 flex items-center justify-center"
+        style={{ height: 40 }}
+      >
+        <span className="rounded-full border border-white/8 bg-slate-950/60 px-3 py-1 text-[10px] font-extrabold tracking-widest text-slate-500 uppercase backdrop-blur-md">
+          {(data as any).label}
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const nodeTypes = {
   customNode: CustomNode,
+  stageLabel: StageLabelNode,
 };
 
 export const SkillTreeCanvas: React.FC = () => {
@@ -29,20 +56,37 @@ export const SkillTreeCanvas: React.FC = () => {
     hoveredNodeId,
     selectedProjectId,
     projects,
-    adminMode,
-    saveEdge,
-    deleteEdge
   } = useSkillTree();
 
   const activeProject = useMemo(() => {
     return projects.find(p => p.id === selectedProjectId) || null;
   }, [projects, selectedProjectId]);
 
+  // Build stage label nodes (one per stage column)
+  // extent: 'parent' would limit them, instead we use `extent` as fixed positions
+  const stageLabelNodes = useMemo(() => {
+    return Array.from({ length: NUM_STAGES }, (_, idx) => ({
+      id: `stage-label-${idx + 1}`,
+      type: 'stageLabel',
+      position: { x: STAGE_START_X + idx * STAGE_STEP_X - STAGE_STEP_X / 2, y: -90 },
+      data: { label: `Stufe ${idx + 1}` },
+      draggable: false,
+      selectable: false,
+      focusable: false,
+      zIndex: -1,
+      // Exclude from fitView bounds
+      measured: { width: 0, height: 0 },
+    }));
+  }, []);
+
+  // For fitView: only fit to skill nodes, not stage label nodes
+  const skillNodeIds = useMemo(() => {
+    return nodes.map(n => ({ id: n.id }));
+  }, [nodes]);
+
   // Format nodes for React Flow
   const flowNodes = useMemo(() => {
-    return nodes.map(node => {
-      // Check if node is filtered out
-      // We don't remove them from canvas to keep the graph structure intact, but we can dim them
+    const skillNodes = nodes.map(node => {
       const state = completionStates[node.id] || 'locked';
       
       return {
@@ -56,11 +100,11 @@ export const SkillTreeCanvas: React.FC = () => {
           is_milestone: node.is_milestone,
           summary: node.summary,
         },
-        // In React Flow, nodes are draggable. We only allow dragging in Admin Mode!
-        draggable: adminMode,
+        draggable: false,
       };
     });
-  }, [nodes, adminMode, completionStates]);
+    return [...stageLabelNodes, ...skillNodes];
+  }, [nodes, completionStates, stageLabelNodes]);
 
   // Format edges for React Flow with custom dynamic styling
   const flowEdges = useMemo(() => {
@@ -130,86 +174,13 @@ export const SkillTreeCanvas: React.FC = () => {
   }, [edges, hoveredNodeId, selectedProjectId, activeProject]);
 
   const onNodeClick = useCallback((_: any, node: any) => {
+    // Ignore clicks on stage label nodes
+    if (node.id.startsWith('stage-label-')) return;
     setSelectedNodeId(node.id);
   }, [setSelectedNodeId]);
 
-  // Handle Dragging Nodes (Position updates in database)
-  const { saveNode } = useSkillTree();
-  const onNodeDragStop = useCallback(async (_: any, node: any) => {
-    if (!adminMode) return;
-    try {
-      const originalNode = nodes.find(n => n.id === node.id);
-      if (!originalNode) return;
-      
-      // Update coordinates
-      await saveNode(node.id, {
-        position_x: Math.round(node.position.x),
-        position_y: Math.round(node.position.y),
-      }, 'Knoten-Position verschoben');
-    } catch (err: any) {
-      console.error('Failed to save dragged position:', err);
-    }
-  }, [adminMode, nodes, saveNode]);
-
-  // Create new connections in Admin Mode
-  const onConnect = useCallback(async (connection: Connection) => {
-    if (!adminMode || !connection.source || !connection.target) return;
-    try {
-      const type = prompt(
-        'Verbindungstyp eingeben:\n1: prerequisite (Voraussetzung)\n2: leads_to (Führt zu)\n3: required_for_project (Projekt-Bestandteil)',
-        'prerequisite'
-      );
-      
-      if (!type) return;
-      
-      let relation_type: 'prerequisite' | 'leads_to' | 'required_for_project' = 'prerequisite';
-      if (type === '1' || type === 'prerequisite') relation_type = 'prerequisite';
-      else if (type === '2' || type === 'leads_to') relation_type = 'leads_to';
-      else if (type === '3' || type === 'required_for_project') relation_type = 'required_for_project';
-
-      await saveEdge({
-        source_node_id: connection.source,
-        target_node_id: connection.target,
-        relation_type
-      });
-      
-      alert('Verbindung erstellt!');
-    } catch (err: any) {
-      alert(err.message || 'Fehler beim Erstellen der Verbindung.');
-    }
-  }, [adminMode, saveEdge]);
-
-  // Delete connections on double click in Admin Mode
-  const onEdgeDoubleClick = useCallback(async (_: any, edge: Edge) => {
-    if (!adminMode) return;
-    if (confirm(`Verbindung zwischen ${edge.source} und ${edge.target} löschen?`)) {
-      try {
-        await deleteEdge(edge.id);
-        alert('Verbindung gelöscht.');
-      } catch (err: any) {
-        alert(err.message);
-      }
-    }
-  }, [adminMode, deleteEdge]);
-
   return (
     <div className="relative h-full w-full bg-[#040812] overflow-hidden">
-      {/* Background Stages Grid */}
-      <div className="pointer-events-none absolute inset-0 flex h-full w-full">
-        {Array.from({ length: 9 }).map((_, idx) => (
-          <div 
-            key={idx} 
-            className="flex h-full flex-1 flex-col border-r border-white/3 last:border-0"
-          >
-            {/* Stage Numbers Header */}
-            <div className="flex h-12 items-center justify-center bg-slate-950/20 text-center border-b border-white/3">
-              <span className="text-xs font-extrabold tracking-widest text-slate-500">
-                STUFE {idx + 1}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
 
       {/* Floating Instructions */}
       <div className="pointer-events-none absolute top-4 left-4 z-10 max-w-xs space-y-2 rounded-xl border border-white/5 bg-slate-950/70 p-3 backdrop-blur-md">
@@ -221,11 +192,6 @@ export const SkillTreeCanvas: React.FC = () => {
           <li>• Zoom per Mausrad. Ziehen zum Verschieben.</li>
           <li>• Hover über Knoten zeigt Abhängigkeiten.</li>
           <li>• Klick auf Knoten öffnet Details &amp; Lernaufgaben.</li>
-          {adminMode && (
-            <li className="font-semibold text-amber-400">
-              • Admin: Knoten ziehen zum Bewegen. Doppelklick Kante zum Löschen.
-            </li>
-          )}
         </ul>
       </div>
 
@@ -235,12 +201,9 @@ export const SkillTreeCanvas: React.FC = () => {
         edges={flowEdges}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
-        onNodeDragStop={onNodeDragStop}
-        onConnect={onConnect}
-        onEdgeDoubleClick={onEdgeDoubleClick}
         fitView
-        fitViewOptions={{ padding: 0.15 }}
-        minZoom={0.2}
+        fitViewOptions={{ padding: 0.08, minZoom: 0.08, nodes: skillNodeIds }}
+        minZoom={0.08}
         maxZoom={1.5}
         className="h-full w-full"
       >
@@ -251,6 +214,7 @@ export const SkillTreeCanvas: React.FC = () => {
         />
         <MiniMap 
           nodeColor={(node) => {
+            if (node.id.startsWith('stage-label-')) return 'transparent';
             const cat = node.data?.category;
             if (cat === 'Learning Design') return '#8b5cf6';
             if (cat === 'UX Design') return '#f43f5e';

@@ -2,17 +2,13 @@
 
 import React from 'react';
 import { useSkillTree } from '../context/SkillTreeContext';
-import { Shield, ShieldAlert, Award, RefreshCw, LayoutDashboard } from 'lucide-react';
+import { Award, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 
 export const Navbar: React.FC = () => {
   const { 
     nodes, 
     completionStates, 
-    adminMode, 
-    setAdminMode,
-    refreshData,
-    loading
   } = useSkillTree();
 
   // Calculate progress
@@ -36,9 +32,7 @@ export const Navbar: React.FC = () => {
               <span className="bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-base font-bold tracking-wide text-transparent sm:text-lg">
                 Learning Design Skilltree
               </span>
-              <span className="hidden text-[10px] text-slate-500 sm:block leading-none">
-                CAS/SAS Learning App Design & Vibe Coding
-              </span>
+
             </div>
           </Link>
         </div>
@@ -61,7 +55,7 @@ export const Navbar: React.FC = () => {
           </div>
         )}
 
-        {/* Navigation & Admin Toggles */}
+        {/* Navigation */}
         <div className="flex items-center space-x-2 sm:space-x-4">
           <Link 
             href="/skilltree" 
@@ -84,38 +78,6 @@ export const Navbar: React.FC = () => {
           >
             Liste
           </Link>
-
-          {/* Sync Button */}
-          <button
-            onClick={() => refreshData()}
-            disabled={loading}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-white/5 hover:text-white transition-colors"
-            title="Daten synchronisieren"
-          >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
-          </button>
-
-          {/* Admin Toggle */}
-          <button
-            onClick={() => setAdminMode(!adminMode)}
-            className={`flex items-center space-x-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold shadow-sm transition-all duration-300 ${
-              adminMode 
-                ? 'border-amber-500/30 bg-amber-500/10 text-amber-400 shadow-amber-500/5 hover:bg-amber-500/20' 
-                : 'border-white/10 bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-            }`}
-          >
-            {adminMode ? (
-              <>
-                <ShieldAlert className="h-3.5 w-3.5 animate-pulse" />
-                <span className="hidden sm:inline">Admin-Modus</span>
-              </>
-            ) : (
-              <>
-                <Shield className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Admin</span>
-              </>
-            )}
-          </button>
         </div>
 
       </div>

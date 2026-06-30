@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Map, ArrowRight } from 'lucide-react';
+import { Map, ArrowRight, BookOpen, Users } from 'lucide-react';
+
 
 export default function Home() {
   return (
@@ -22,14 +23,33 @@ export default function Home() {
           </span>
         </h1>
 
-        <Link
-          href="/skilltree"
-          className="inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-rose-600 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-violet-500/20 hover:from-violet-500 hover:to-rose-500 hover:shadow-violet-500/30 hover:scale-105 active:scale-98 transition-all"
-        >
-          <Map className="h-4.5 w-4.5" />
-          <span>Skilltree öffnen</span>
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <Link
+            href="/skilltree"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-rose-600 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-violet-500/20 hover:from-violet-500 hover:to-rose-500 hover:shadow-violet-500/30 hover:scale-105 active:scale-98 transition-all"
+          >
+            <Map className="h-4.5 w-4.5" />
+            <span>Skilltree öffnen</span>
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+
+          <Link
+            href="/design-prozess"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 rounded-xl bg-slate-900 border border-white/10 px-8 py-4 text-sm font-bold text-slate-200 shadow-lg shadow-black/20 hover:bg-slate-800 hover:text-white hover:border-white/20 hover:scale-105 active:scale-98 transition-all"
+          >
+            <BookOpen className="h-4.5 w-4.5 text-amber-400" />
+            <span>Design Prozess</span>
+          </Link>
+
+          <Link
+            href="/community"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 rounded-xl bg-slate-900 border border-white/10 px-8 py-4 text-sm font-bold text-slate-200 shadow-lg shadow-black/20 hover:bg-slate-800 hover:text-white hover:border-white/20 hover:scale-105 active:scale-98 transition-all"
+          >
+            <Users className="h-4.5 w-4.5 text-emerald-400" />
+            <span>Community</span>
+          </Link>
+        </div>
+
 
       </div>
     </div>

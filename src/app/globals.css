@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-learning: hsv(263, 85%, 65%);
-  --color-ux: hsv(349, 85%, 65%);
-  --color-ai: hsv(142, 75%, 55%);
-  --color-data: hsv(200, 85%, 55%);
-  --color-product: hsv(45, 90%, 60%);
+  --color-learning: #8b5cf6;
+  --color-ux: #f43f5e;
+  --color-ai: #10b981;
+  --color-data: #3b82f6;
+  --color-product: #eab308;
   
-  --color-bg-dark: #080c14;
-  --color-card-dark: rgba(13, 20, 35, 0.65);
-  --color-border-dark: rgba(255, 255, 255, 0.08);
+  --color-bg-dark: #f4f1ea;
+  --color-card-dark: #faf8f5;
+  --color-border-dark: rgba(24, 24, 27, 0.08);
 }
 
 :root {
-  --background: #060913;
-  --foreground: #f3f4f6;
+  --background: #f4f1ea;
+  --foreground: #18181b;
   
-  /* Core competency domain colors */
+  /* RGB color weights for dynamic components */
   --learning-color: 139, 92, 246; /* Purple */
   --ux-color: 244, 63, 94;       /* Rose */
   --ai-color: 16, 185, 129;      /* Emerald */
@@ -31,97 +31,166 @@ body {
   overflow-x: hidden;
 }
 
-/* Glassmorphism helpers */
+/* Tactile Paper Panels & Cards */
 .glass-panel {
-  background: rgba(13, 22, 41, 0.7);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #faf8f5;
+  border: 2px solid #18181b;
+  box-shadow: 4px 4px 0px 0px rgba(24, 24, 27, 0.15);
 }
 
 .glass-panel-heavy {
-  background: rgba(8, 14, 27, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #fdfbf7;
+  border-left: 3px solid #18181b;
+  box-shadow: -6px 0px 15px rgba(24, 24, 27, 0.08);
 }
 
 .glass-card {
-  background: rgba(17, 28, 52, 0.5);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #faf8f5;
+  border: 2px solid #18181b;
+  box-shadow: 3px 3px 0px 0px rgba(24, 24, 27, 0.15);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-  background: rgba(22, 37, 68, 0.75);
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  background: #ffffff;
+  transform: translateY(-2.5px) rotate(0.5deg);
+  box-shadow: 6px 6px 0px 0px rgba(24, 24, 27, 0.2);
 }
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(10, 15, 30, 0.5);
+  background: #f4f1ea;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #18181b;
   border-radius: 99px;
+  border: 2px solid #f4f1ea;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #3f3f46;
 }
 
-/* Animated Grid Background */
+/* Paper / Cardboard Grid Background */
 .grid-bg {
-  background-size: 40px 40px;
+  background-size: 32px 32px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(24, 24, 27, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(24, 24, 27, 0.04) 1px, transparent 1px);
 }
 
-/* Glow effects */
-.glow-learning { box-shadow: 0 0 15px rgba(139, 92, 246, 0.25); }
-.glow-ux { box-shadow: 0 0 15px rgba(244, 63, 94, 0.25); }
-.glow-ai { box-shadow: 0 0 15px rgba(16, 185, 129, 0.25); }
-.glow-data { box-shadow: 0 0 15px rgba(59, 130, 246, 0.25); }
-.glow-product { box-shadow: 0 0 15px rgba(234, 179, 8, 0.25); }
+/* Notebook lined paper pattern */
+.notebook-ruled {
+  background-color: #fefce8; /* pale yellow legal pad */
+  background-image: linear-gradient(rgba(59, 130, 246, 0.12) 1px, transparent 1px);
+  background-size: 100% 24px;
+}
+
+/* Washi tape visual decoration */
+.washi-tape {
+  position: absolute;
+  width: 90px;
+  height: 24px;
+  background: rgba(245, 158, 11, 0.25); /* amber translucent washi tape */
+  backdrop-filter: blur(1px);
+  border-left: 2px dashed rgba(24, 24, 27, 0.15);
+  border-right: 2px dashed rgba(24, 24, 27, 0.15);
+  box-shadow: 1px 1px 3px rgba(24, 24, 27, 0.05);
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.washi-tape-emerald {
+  background: rgba(16, 185, 129, 0.25);
+  transform: translateX(-50%) rotate(1deg);
+}
+
+.washi-tape-rose {
+  background: rgba(244, 63, 94, 0.25);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+.washi-tape-violet {
+  background: rgba(139, 92, 246, 0.25);
+  transform: translateX(-50%) rotate(2.5deg);
+}
+
+/* Washi tape corner helpers */
+.washi-corner-tr {
+  position: absolute;
+  width: 50px;
+  height: 18px;
+  background: rgba(245, 158, 11, 0.22);
+  top: -6px;
+  right: -10px;
+  transform: rotate(35deg);
+  border-left: 2px dashed rgba(24, 24, 27, 0.1);
+  border-right: 2px dashed rgba(24, 24, 27, 0.1);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.washi-corner-tl {
+  position: absolute;
+  width: 50px;
+  height: 18px;
+  background: rgba(139, 92, 246, 0.2);
+  top: -6px;
+  left: -10px;
+  transform: rotate(-35deg);
+  border-left: 2px dashed rgba(24, 24, 27, 0.1);
+  border-right: 2px dashed rgba(24, 24, 27, 0.1);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Highlighter outlines */
+.glow-learning { box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.35); }
+.glow-ux { box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.35); }
+.glow-ai { box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35); }
+.glow-data { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35); }
+.glow-product { box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.35); }
 
 /* Node glow pulse */
 @keyframes pulse-glow {
   0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
+    box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.3), 3px 3px 0px 0px rgba(24, 24, 27, 0.15);
   }
   50% {
-    opacity: 0.6;
-    transform: scale(1.03);
+    box-shadow: 0 0 0 6px rgba(234, 179, 8, 0.5), 3px 3px 0px 0px rgba(24, 24, 27, 0.15);
   }
 }
 
-.pulse-glow-learning {
-  animation: pulse-glow 2.5s infinite;
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
-}
-.pulse-glow-ux {
-  animation: pulse-glow 2.5s infinite;
-  box-shadow: 0 0 25px rgba(244, 63, 94, 0.4);
-}
-.pulse-glow-ai {
-  animation: pulse-glow 2.5s infinite;
-  box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
-}
-.pulse-glow-data {
-  animation: pulse-glow 2.5s infinite;
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
-}
 .pulse-glow-product {
   animation: pulse-glow 2.5s infinite;
-  box-shadow: 0 0 25px rgba(234, 179, 8, 0.4);
+}
+
+/* Hard outline helper for tactile focus */
+.tactile-btn {
+  border: 2px solid #18181b;
+  box-shadow: 3px 3px 0px 0px #18181b;
+  transition: all 0.15s ease;
+  background-color: #ffffff;
+  color: #18181b;
+}
+
+.tactile-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px 0px #18181b;
+}
+
+.tactile-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px #18181b;
 }
 
 /* React Flow Visual Adjustments */
@@ -130,18 +199,17 @@ body {
 }
 
 .react-flow__edge-path {
-  stroke-width: 2.5;
-  transition: stroke 0.3s, stroke-width 0.3s, filter 0.3s;
+  stroke-width: 2.2;
+  transition: stroke 0.3s, stroke-width 0.3s;
 }
 
 .react-flow__edge.active .react-flow__edge-path {
-  stroke-width: 4;
-  filter: drop-shadow(0 0 5px currentColor);
+  stroke-width: 3.5;
 }
 
 .react-flow__handle {
-  width: 8px !important;
-  height: 8px !important;
-  background: #ffffff !important;
-  border: 2px solid #111827 !important;
+  width: 9px !important;
+  height: 9px !important;
+  background: #18181b !important;
+  border: 1.5px solid #ffffff !important;
 }

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useSkillTree } from '../context/SkillTreeContext';
-import { Search, RotateCcw, BookOpen, Layers, Sparkles } from 'lucide-react';
+import { Search, RotateCcw, Layers, Sparkles } from 'lucide-react';
 
 export const FilterPanel: React.FC = () => {
   const {
@@ -19,41 +19,43 @@ export const FilterPanel: React.FC = () => {
   } = useSkillTree();
 
   const categories = [
-    { name: 'Learning Design', color: 'bg-violet-500/10 text-violet-400 border-violet-500/30' },
-    { name: 'UX Design', color: 'bg-rose-500/10 text-rose-400 border-rose-500/30' },
-    { name: 'AI Design', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' },
-    { name: 'Data Design', color: 'bg-blue-500/10 text-blue-400 border-blue-500/30' },
-    { name: 'Product Design', color: 'bg-amber-500/10 text-amber-400 border-amber-500/30' }
+    { name: 'Learning Design', activeClass: 'bg-violet-600 text-white border-violet-850', inactiveClass: 'bg-violet-50 text-violet-800 border-violet-200 hover:bg-violet-100/70' },
+    { name: 'UX Design', activeClass: 'bg-rose-600 text-white border-rose-850', inactiveClass: 'bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100/70' },
+    { name: 'AI Design', activeClass: 'bg-emerald-600 text-white border-emerald-850', inactiveClass: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100/70' },
+    { name: 'Data Design', activeClass: 'bg-blue-600 text-white border-blue-850', inactiveClass: 'bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100/70' },
+    { name: 'Product Design', activeClass: 'bg-amber-600 text-white border-amber-850', inactiveClass: 'bg-amber-50 text-amber-850 border-amber-200 hover:bg-amber-100/70' }
   ];
 
+  const hasActiveFilters = !!(categoryFilter || levelFilter || searchQuery || selectedProjectId);
+
   return (
-    <div className="glass-panel rounded-2xl p-4 shadow-xl shadow-black/40">
+    <div className="glass-panel rounded-2xl p-4">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-500" />
           <input
             type="text"
             placeholder="Skills suchen (z.B. Prompting)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-white/5 bg-slate-950/50 py-2 pr-4 pl-9 text-sm text-slate-200 placeholder-slate-500 shadow-inner outline-none transition-colors focus:border-white/15 focus:bg-slate-950"
+            className="w-full rounded-xl border-2 border-slate-900 bg-white py-2 pr-4 pl-9 text-sm text-slate-800 placeholder-slate-400 shadow-sm outline-none transition-all focus:ring-2 focus:ring-violet-400"
           />
         </div>
 
         {/* Project Path Selector */}
         <div className="relative w-full sm:w-64">
-          <div className="flex items-center space-x-2 rounded-xl border border-white/5 bg-slate-950/50 px-3 py-1.5 shadow-inner">
-            <Sparkles className="h-4 w-4 text-amber-400 shrink-0" />
+          <div className="flex items-center space-x-2 rounded-xl border-2 border-slate-900 bg-white px-3 py-1.5 shadow-sm">
+            <Sparkles className="h-4 w-4 text-amber-500 shrink-0" />
             <select
               value={selectedProjectId || ''}
               onChange={(e) => setSelectedProjectId(e.target.value || null)}
-              className="w-full bg-transparent text-xs font-semibold text-slate-300 outline-none cursor-pointer"
+              className="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
             >
-              <option value="" className="bg-slate-950 text-slate-400">--- Projektpfad wählen ---</option>
+              <option value="" className="bg-white text-slate-400">--- Lernpfad wählen ---</option>
               {projects.map((project) => (
-                <option key={project.id} value={project.id} className="bg-slate-950 text-slate-200">
+                <option key={project.id} value={project.id} className="bg-white text-slate-800">
                   {project.title}
                 </option>
               ))}
@@ -63,16 +65,16 @@ export const FilterPanel: React.FC = () => {
 
         {/* Level Selector */}
         <div className="relative w-full sm:w-44">
-          <div className="flex items-center space-x-2 rounded-xl border border-white/5 bg-slate-950/50 px-3 py-1.5 shadow-inner">
-            <Layers className="h-4 w-4 text-slate-400 shrink-0" />
+          <div className="flex items-center space-x-2 rounded-xl border-2 border-slate-900 bg-white px-3 py-1.5 shadow-sm">
+            <Layers className="h-4 w-4 text-slate-500 shrink-0" />
             <select
               value={levelFilter || ''}
               onChange={(e) => setLevelFilter(e.target.value ? Number(e.target.value) : null)}
-              className="w-full bg-transparent text-xs font-semibold text-slate-300 outline-none cursor-pointer"
+              className="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
             >
-              <option value="" className="bg-slate-950 text-slate-400">Stufe (Alle)</option>
+              <option value="" className="bg-white text-slate-400">Stufe (Alle)</option>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((lvl) => (
-                <option key={lvl} value={lvl} className="bg-slate-950 text-slate-200">
+                <option key={lvl} value={lvl} className="bg-white text-slate-800">
                   Stufe {lvl}
                 </option>
               ))}
@@ -80,30 +82,35 @@ export const FilterPanel: React.FC = () => {
           </div>
         </div>
 
-        {/* Reset Filters */}
-        {(categoryFilter || levelFilter || searchQuery || selectedProjectId) && (
-          <button
-            onClick={() => {
+        {/* Reset Filters (Always rendered, disables to avoid layout shifts) */}
+        <button
+          onClick={() => {
+            if (hasActiveFilters) {
               resetFilters();
               setSelectedProjectId(null);
-            }}
-            className="flex items-center justify-center space-x-1.5 rounded-xl border border-rose-500/20 bg-rose-500/5 px-4 py-2 text-xs font-bold text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/30 transition-all cursor-pointer"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-            <span>Zurücksetzen</span>
-          </button>
-        )}
+            }
+          }}
+          disabled={!hasActiveFilters}
+          className={`flex items-center justify-center space-x-1.5 rounded-xl border-2 px-4 py-2 text-xs font-bold transition-all cursor-pointer shadow-[2px_2px_0px_0px_#18181b] active:translate-y-px shrink-0 ${
+            hasActiveFilters
+              ? 'border-rose-500 bg-rose-50 text-rose-600 hover:bg-rose-100/50'
+              : 'border-slate-200 bg-slate-100 text-slate-400 shadow-none pointer-events-none opacity-50'
+          }`}
+        >
+          <RotateCcw className="h-3.5 w-3.5" />
+          <span>Zurücksetzen</span>
+        </button>
 
       </div>
 
       {/* Category Tabs */}
-      <div className="mt-4 flex flex-wrap gap-2 border-t border-white/5 pt-3">
+      <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-900/10 pt-3">
         <button
           onClick={() => setCategoryFilter(null)}
-          className={`rounded-full px-3 py-1 text-xs font-medium border transition-all cursor-pointer ${
+          className={`rounded-full px-3 py-1 text-xs font-black border-2 transition-all cursor-pointer shadow-[2px_2px_0px_0px_#18181b] active:translate-y-px ${
             categoryFilter === null
-              ? 'border-white/20 bg-white/10 text-white'
-              : 'border-white/5 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200'
+              ? 'border-slate-900 bg-slate-900 text-white shadow-none'
+              : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
           }`}
         >
           Alle Kompetenzen
@@ -114,10 +121,10 @@ export const FilterPanel: React.FC = () => {
             <button
               key={cat.name}
               onClick={() => setCategoryFilter(isSelected ? null : cat.name)}
-              className={`rounded-full px-3 py-1 text-xs font-semibold border transition-all cursor-pointer ${
+              className={`rounded-full px-3 py-1 text-xs font-black border-2 transition-all cursor-pointer shadow-[2px_2px_0px_0px_#18181b] active:translate-y-px ${
                 isSelected 
-                  ? 'bg-white/10 border-white/40 text-white shadow-md' 
-                  : `${cat.color} hover:bg-white/5`
+                  ? `${cat.activeClass} shadow-none` 
+                  : cat.inactiveClass
               }`}
             >
               {cat.name}

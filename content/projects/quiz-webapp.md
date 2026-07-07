@@ -1,7 +1,7 @@
 ---
 id: "p-quiz"
 slug: "quiz-webapp"
-title: "Interaktive Quiz-Webapp"
+title: "Lernapp"
 summary: "Eine einfache Lernapp, die aktive Abrufhandlungen (Retrieval Practice) auslöst."
 artifact_description: "Eine responsive Webapplikation mit 5 didaktisch aufbereiteten Fragen, Fortschrittsanzeige, formativen Hilfestellungen und einer kurzen Reflexionsseite zur begründeten Lernwirksamkeit."
 learning_strategy: "Aktivierung durch abwechselnde Abruf- und Kontrollprozesse (Retrieval Practice)."

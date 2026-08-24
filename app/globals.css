@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    @apply min-h-full bg-paper text-ink antialiased;
+  }
+
+  body {
+    @apply font-sans;
+  }
+
+  h1 {
+    @apply font-hand;
+  }
+}
+
+@layer components {
+  .vv-box {
+    @apply rounded-2xl border-2 border-ink bg-white shadow-sketch;
+  }
+
+  /* Hover für eigenständig verlinkte Boxen */
+  .vv-lift {
+    @apply transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-sketch-lg;
+  }
+
+  /* Hover für Boxen innerhalb eines Link-Wrappers mit .group */
+  .vv-lift-group {
+    @apply transition group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-sketch-lg;
+  }
+
+  .vv-highlight {
+    @apply bg-fhnw;
+  }
+}

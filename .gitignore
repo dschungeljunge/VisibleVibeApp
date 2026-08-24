@@ -9,5 +9,6 @@ out
 Thumbs.db
 *.tsbuildinfo
 .obsidian
+supabase/.temp
 public/excalidraw-assets
 public/excalidraw-assets-dev

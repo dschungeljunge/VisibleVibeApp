@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { PageMain, SketchBox } from "@/components/Page";
 
@@ -22,14 +23,24 @@ const entries = [
 export default function HomePage() {
   return (
     <PageMain wide>
-      <p className="text-sm text-muted">VisibleVibe</p>
-      <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
-        Lehrpersonen entwickeln Lernapps.
+      <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
+        Lernen gestalten. Ideen bauen.
       </h1>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/80">
-        Eine Lern- und Entwicklungsumgebung für Pädagogik, Technologie und Gestaltung – nicht
-        fürs Programmieren um des Programmierens willen.
+      <p className="mt-5 max-w-3xl text-xl text-ink/80 sm:text-2xl">
+        Lehrpersonen entwickeln Lernapps.
       </p>
+      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/80">
+        Eine Lern- und Entwicklungsumgebung für Pädagogik, Technologie und Gestaltung.
+      </p>
+
+      <Image
+        src="/images/arbeitstisch.png"
+        alt="Illustration eines Arbeitstischs: mehrere Hände skizzieren Ideen, Abläufe und Oberflächen auf Papier, in der Mitte eine gelbe Notiz mit Glühbirne, rechts entsteht die Lernapp am Laptop."
+        width={1024}
+        height={400}
+        priority
+        className="mt-14 w-full"
+      />
 
       <div className="mt-16 grid gap-6 md:grid-cols-3">
         {entries.map((entry) => (

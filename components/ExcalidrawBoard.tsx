@@ -304,7 +304,7 @@ export function ExcalidrawBoard({
           ) : saveState === "saving" ? (
             "Wird gespeichert …"
           ) : (
-            "In deinem Konto gespeichert"
+            "Gespeichert"
           )
         ) : (
           <Link href="/login" className="underline">

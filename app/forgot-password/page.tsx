@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ForgotPasswordPage() {
   return (
     <PageMain>
-      <PageKicker>Konto</PageKicker>
+      <PageKicker>Mein Bereich</PageKicker>
       <h1 className="text-4xl font-semibold tracking-tight">Passwort zurücksetzen</h1>
       <p className="mb-8 mt-5 text-lg leading-relaxed text-ink/80">
         Wir senden dir einen zeitlich begrenzten Link zum Festlegen eines neuen Passworts.

@@ -32,7 +32,9 @@ export function AuthForm() {
       setPending(false);
       setMessage(
         error
-          ? error.message
+          ? error.message === "Failed to fetch"
+            ? "Keine Verbindung zum Anmeldeserver. Bitte später erneut versuchen."
+            : error.message
           : "Konto erstellt. Bitte bestätige deine E-Mail-Adresse und melde dich danach an.",
       );
       return;
@@ -42,7 +44,11 @@ export function AuthForm() {
     setPending(false);
 
     if (error) {
-      setMessage(error.message);
+      setMessage(
+        error.message === "Failed to fetch"
+          ? "Keine Verbindung zum Anmeldeserver. Bitte später erneut versuchen."
+          : error.message,
+      );
       return;
     }
 

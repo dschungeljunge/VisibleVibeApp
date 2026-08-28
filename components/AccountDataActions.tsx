@@ -77,7 +77,7 @@ export function AccountDataActions({ email }: { email: string }) {
     <div className="space-y-8">
       <section className="vv-box p-6">
         <h2 className="text-xl font-semibold">Passwort</h2>
-        <p className="mt-2 text-ink/75">Lege ein neues Passwort für dein Konto fest.</p>
+        <p className="mt-2 text-ink/75">Lege ein neues Passwort fest.</p>
         <Link
           href="/account/password"
           className="mt-5 inline-block rounded-md border-2 border-ink bg-white px-4 py-2 font-medium hover:bg-fhnw-soft"

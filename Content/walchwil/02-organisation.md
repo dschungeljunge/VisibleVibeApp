@@ -1,0 +1,47 @@
+---
+title: "Organisation und Vorbereitung"
+slug: "organisation"
+kind: prep
+order: 2
+when: "August und September 2026"
+format: "Video · Terminfindung auf dieser Seite"
+start: "2026-08-14"
+end: "2026-09-30"
+goal: "Diese Seite kennenlernen, die Online-Donnerstage finden und offene Fragen klären."
+summary: "Kurzes Video, gemeinsame Terminfindung und Raum für Fragen — auch zum Vorzeigen auf der Website."
+after: "Erste eigene Versuche: eine Idee skizzieren, ein Werkzeug ausprobieren, einen Mini-Prototyp bauen."
+status: "published"
+videos:
+  - title: "Diese Seite und wie wir weiterarbeiten"
+    url: "https://www.loom.com/embed/d36f4524cad64ffca532bc2bd982fa75"
+dates:
+  - id: "2026-10-15"
+    label: "15. Oktober"
+    group: "Oktober · Online 1"
+  - id: "2026-10-22"
+    label: "22. Oktober"
+    group: "Oktober · Online 1"
+  - id: "2026-10-29"
+    label: "29. Oktober"
+    group: "Oktober · Online 1"
+  - id: "2026-11-05"
+    label: "5. November"
+    group: "November · Online 2"
+  - id: "2026-11-12"
+    label: "12. November"
+    group: "November · Online 2"
+  - id: "2026-11-19"
+    label: "19. November"
+    group: "November · Online 2"
+  - id: "2026-11-26"
+    label: "26. November"
+    group: "November · Online 2"
+  - id: "2026-12-03"
+    label: "3. Dezember"
+    group: "Dezember · Online 3"
+  - id: "2026-12-10"
+    label: "10. Dezember"
+    group: "Dezember · Online 3"
+---
+
+Wir schauen uns die Seite gemeinsam an. Wenn etwas unklar ist oder ihr etwas gezeigt haben möchtet: einfach sagen — wir klären es hier.

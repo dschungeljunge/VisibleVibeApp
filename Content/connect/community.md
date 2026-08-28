@@ -1,18 +1,18 @@
 ---
-title: "VisibleVibe Community"
+title: "Was passiert, wenn Lehrpersonen ihre digitalen Werkzeuge selbst bauen?"
 slug: "community"
 type: "connect"
 order: 1
 status: "published"
-summary: "VisibleVibe ist mehr als eine Lernplattform: eine Gemeinschaft von Lehrpersonen, die Lernapps entwickeln und Erfahrungen teilen."
+summary: "Dass Lehrpersonen per Vibe Coding eigene Lernapps entwickeln, polarisiert. VisibleVibe stellt sich den offenen Fragen – als Community of Practice und gemeinsam mit Schulen."
 ---
 
-<!-- Platzhalter. Discord-Link bitte ersetzen, sobald die öffentliche Einladung feststeht. -->
+Einige Einwände sind berechtigt: Welche Qualität haben die entstehenden Anwendungen? Wie gehen wir mit Datenschutz, Abhängigkeiten und Fehlern um? Und was bedeutet es für Schule und Unterricht, wenn Lehrpersonen plötzlich selbst digitale Werkzeuge entwickeln können?
 
-VisibleVibe verbindet begleitete Schulentwicklungsprozesse mit einer offenen Community. Hier entstehen Fragen, Beispiele und nächste Schritte – nicht allein in einem Kurs, sondern im Austausch.
+Diesen Fragen wollen wir uns stellen. In den vergangenen Monaten sind gemeinsam mit Lehrpersonen kleine Lernapps entstanden. Die Produkte waren oft erstaunlich stark. Noch stärker überzeugt, was während ihrer Entwicklung geschieht.
 
-Die Community trifft sich digital und gelegentlich vor Ort. Der laufende Gesprächsraum ist der Discord-Server.
+Wenn Lehrpersonen eine eigene Anwendung für ihren Unterricht bauen, setzen sie sich intensiv mit den Bedürfnissen ihrer Schüler:innen auseinander. Sie schärfen die pädagogische Idee, suchen passende technologische Bausteine, treffen Gestaltungsentscheidungen und planen den Einsatz im Fachunterricht. Sie lernen an einer realen Herausforderung aus ihrer eigenen Praxis.
 
-Wenn du eine Lernapp baust, eine Hürde teilen oder andere Arbeiten ansehen möchtest: Komm dazu.
+Aktuell entwickeln wir die VisibleVibe-Methode. Sie soll durch einen Designprozess führen, in dem aus einer pädagogischen Herausforderung eine lernwirksame Applikation entsteht. Dafür verbinden wir Elemente aus Design Thinking, Unterrichtsentwicklung und Engineering-Prozessen. Wir erproben die Methode in unterschiedlichen Situationen und entwickeln sie mit jeder Erfahrung weiter.
 
-[Zum Discord-Server](https://discord.com)
+Unter dem Leitsatz «Lernen gestalten. Ideen bauen.» verfolgen wir zwei Wege.

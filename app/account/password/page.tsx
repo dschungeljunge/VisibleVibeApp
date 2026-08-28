@@ -18,7 +18,7 @@ export default async function UpdatePasswordPage() {
 
   return (
     <PageMain>
-      <PageKicker>Konto</PageKicker>
+      <PageKicker>Mein Bereich</PageKicker>
       <h1 className="text-4xl font-semibold tracking-tight">Neues Passwort festlegen</h1>
       <p className="mb-8 mt-5 text-lg leading-relaxed text-ink/80">
         Verwende mindestens acht Zeichen und kein Passwort, das du bereits anderswo nutzt.

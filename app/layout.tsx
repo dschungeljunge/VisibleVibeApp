@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     default: "VisibleVibe",
     template: "%s · VisibleVibe",
   },
-  description: "Lehrpersonen entwickeln Lernapps.",
+  description: "Lernen gestalten. Ideen bauen. Lehrpersonen entwickeln Lernapps.",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

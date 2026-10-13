@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "unterrichts-mikrotool"
 order: 1
-status: "published"
+status: draft
 summary: "Beobachtung beschreibt, was sichtbar geschieht — die Deutung bleibt vorläufig."
 ---
 

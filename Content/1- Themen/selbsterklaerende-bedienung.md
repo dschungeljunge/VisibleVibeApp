@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "usability"
 project: "unterrichts-mikrotool"
 order: 28
-status: "published"
+status: draft
 summary: "Zustand und mögliche Handlungen sind ohne Anleitung erkennbar."
 ---
 

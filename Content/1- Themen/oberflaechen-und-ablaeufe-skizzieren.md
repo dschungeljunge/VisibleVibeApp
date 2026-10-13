@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "usability"
 project: "unterrichts-mikrotool"
 order: 26
-status: "published"
+status: draft
 summary: "Skizzen machen Gestaltungsentscheidungen diskutierbar, bevor Code entsteht."
 ---
 

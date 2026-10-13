@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "interaktive-lernaufgabe"
 order: 5
-status: "published"
+status: draft
 summary: "Gute Antwortoptionen machen Denkwege sichtbar statt nur Ergebnisse zu prüfen."
 ---
 

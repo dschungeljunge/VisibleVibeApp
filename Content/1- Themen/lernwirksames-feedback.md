@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "interaktive-lernaufgabe"
 order: 6
-status: "published"
+status: draft
 summary: "Feedback wirkt, wenn es einen nächsten Denkschritt eröffnet statt die Lösung zu liefern."
 ---
 

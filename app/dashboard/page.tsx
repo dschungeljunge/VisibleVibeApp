@@ -33,10 +33,7 @@ export default async function DashboardPage() {
   const methodBoard = boards?.find((board) => board.kind === "method");
   const projectBoards = boards?.filter((board) => board.kind === "project") ?? [];
   const projects = getVisibleDocuments("learn-project");
-  const firstMethodStep = getVisibleDocuments("visiblevibe-step")[0];
-  const methodHref = firstMethodStep
-    ? `/design/visiblevibe/${firstMethodStep.slug}`
-    : "/design/visiblevibe";
+  const methodHref = "/design/visiblevibe";
 
   return (
     <PageMain wide>

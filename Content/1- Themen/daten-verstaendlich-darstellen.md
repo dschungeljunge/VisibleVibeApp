@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "usability"
 project: "lernspuren-sichtbar-machen"
 order: 30
-status: "published"
+status: draft
 summary: "Die Wahl der Visualisierung bestimmt, welche Schlussfolgerungen sie nahelegt."
 ---
 

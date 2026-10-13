@@ -6,7 +6,7 @@ const entries = [
   {
     href: "/learn",
     title: "Learn",
-    text: "Lerne die Grundlagen, die du brauchst, um eigene Lernapps zu entwickeln.",
+    text: "Entdecke Ideen, praktische Hilfen und neue Perspektiven für dein eigenes Lernwerkzeug.",
   },
   {
     href: "/design",

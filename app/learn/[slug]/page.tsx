@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentArticle } from "@/components/ContentArticle";
+import { LearnLab } from "@/components/learn-labs/LearnLab";
 import { getLearnDocument, getVisibleDocuments } from "@/lib/content";
 
 type Params = { slug: string };
@@ -20,10 +22,11 @@ export default function LearnTopicPage({ params }: { params: Params }) {
   const document = getLearnDocument(params.slug);
   if (!document) notFound();
 
-  return (
-    <ContentArticle
-      document={document}
-      kicker={document.type === "learn-project" ? "Learn · Projekt" : "Learn"}
-    />
-  );
+  const kicker = <Link href="/learn" className="underline-offset-4 hover:underline">← Alle Beiträge</Link>;
+
+  if (document.format === "lab") {
+    return <LearnLab document={document} kicker={kicker} />;
+  }
+
+  return <ContentArticle document={document} kicker={kicker} />;
 }

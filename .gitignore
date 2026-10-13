@@ -12,3 +12,7 @@ Thumbs.db
 supabase/.temp
 public/excalidraw-assets
 public/excalidraw-assets-dev
+.docx_workshop_tmp/
+.knacknuss_pptx_build/
+.toolbox_pptx_build/
+.release-qa/

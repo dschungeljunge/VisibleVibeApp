@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "adaptive-lernwege"
 order: 21
-status: "published"
+status: draft
 summary: "Feste Wenn-dann-Regeln sind nachvollziehbar, testbar und erklärbar."
 ---
 

@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "lernspuren-sichtbar-machen"
 order: 18
-status: "published"
+status: draft
 summary: "Ein Datenschema legt fest, welche Felder mit welcher Bedeutung erfasst werden."
 ---
 

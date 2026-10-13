@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "unterrichts-mikrotool"
 order: 17
-status: "published"
+status: draft
 summary: "Code lesen ist eine eigene Fähigkeit — unabhängig davon, ob man ihn schreiben könnte."
 ---
 

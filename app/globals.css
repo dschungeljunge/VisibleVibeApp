@@ -9,7 +9,7 @@
   }
 
   body {
-    @apply font-sans;
+    @apply overflow-x-clip font-sans;
   }
 
   h1 {
@@ -34,5 +34,19 @@
 
   .vv-highlight {
     @apply bg-fhnw;
+  }
+
+  .vv-hscroll {
+    scrollbar-color: rgba(30, 30, 30, 0.4) transparent;
+    scrollbar-width: thin;
+  }
+
+  .vv-hscroll::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .vv-hscroll::-webkit-scrollbar-thumb {
+    background: rgba(30, 30, 30, 0.35);
+    border-radius: 999px;
   }
 }

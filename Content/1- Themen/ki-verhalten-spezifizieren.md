@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "ki-lernbegleitung"
 order: 20
-status: "published"
+status: draft
 summary: "Systemanweisung, Kontext und Ausgabeformat lenken ein KI-System — garantieren aber nichts."
 ---
 

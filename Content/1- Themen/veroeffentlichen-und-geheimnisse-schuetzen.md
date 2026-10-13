@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "unterrichts-mikrotool"
 order: 23
-status: "published"
+status: draft
 summary: "Deployment macht eine App zugänglich — und alles im Browsercode ist öffentlich."
 ---
 

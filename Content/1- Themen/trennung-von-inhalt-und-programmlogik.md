@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "interaktive-lernaufgabe"
 order: 15
-status: "published"
+status: draft
 summary: "Getrennte Inhalte lassen sich ändern, ohne das Programm zu gefährden."
 ---
 

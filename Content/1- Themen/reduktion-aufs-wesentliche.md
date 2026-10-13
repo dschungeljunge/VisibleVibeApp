@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "usability"
 project: "unterrichts-mikrotool"
 order: 25
-status: "published"
+status: draft
 summary: "Die erste Version enthält nur, was der Zweck in der konkreten Situation erfordert."
 ---
 

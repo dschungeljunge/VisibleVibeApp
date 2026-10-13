@@ -57,11 +57,6 @@ export default function DatenschutzPage() {
               sind für andere Teilnehmende derselben Seite sichtbar.
             </li>
             <li>
-              <strong>KI-Coach:</strong> Wenn du die Anpassung einer Methodenanleitung nutzt,
-              gehen ausgewählte Notizen vom Board an OpenAI, damit der Hinweis zu deinem Stand
-              passt. Schreibe dort keine Namen oder Daten von Schüler:innen.
-            </li>
-            <li>
               <strong>Technischer Betrieb:</strong> Beim Aufruf können Zugriffsdaten wie
               IP-Adresse, Zeitpunkt und aufgerufene Seite in Serverprotokollen anfallen.
             </li>
@@ -79,15 +74,6 @@ export default function DatenschutzPage() {
               rel="noopener noreferrer"
             >
               Supabase
-            </a>
-            . Die KI-Anpassung nutzt{" "}
-            <a
-              className="underline underline-offset-2"
-              href="https://openai.com/policies/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              OpenAI
             </a>
             . Dabei kann eine Bearbeitung ausserhalb der Schweiz stattfinden.
           </p>
@@ -128,7 +114,7 @@ export default function DatenschutzPage() {
             </Link>
             .
           </p>
-          <p className="mt-3 text-sm text-muted">Stand: August 2026</p>
+          <p className="mt-3 text-sm text-muted">Stand: Oktober 2026</p>
         </section>
       </div>
     </PageMain>

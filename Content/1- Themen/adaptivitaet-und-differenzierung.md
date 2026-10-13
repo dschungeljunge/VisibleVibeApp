@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "adaptive-lernwege"
 order: 10
-status: "published"
+status: draft
 summary: "Jede Adaption beruht auf einer pädagogischen Annahme, die falsch sein kann."
 ---
 

@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "ki-lernbegleitung"
 order: 19
-status: "published"
+status: draft
 summary: "Sprachmodelle erzeugen wahrscheinliche Fortsetzungen von Text, kein geprüftes Wissen."
 ---
 

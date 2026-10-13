@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "unterrichts-mikrotool"
 order: 2
-status: "published"
+status: draft
 summary: "Eine Wirkungshypothese macht ein Werkzeug pädagogisch überprüfbar."
 ---
 

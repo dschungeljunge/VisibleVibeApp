@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "unterrichts-mikrotool"
 order: 22
-status: "published"
+status: draft
 summary: "Erwartetes Verhalten definieren und dagegen prüfen — gerade in Grenzfällen."
 ---
 

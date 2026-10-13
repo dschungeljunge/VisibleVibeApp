@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
-import { METHOD_BOARD_KEY, textsFromElements } from "@/lib/board";
+import { METHOD_BOARD_KEY } from "@/lib/board";
 import { createClient } from "@/lib/supabase/client";
 import { BoardVersionHistory } from "./BoardVersionHistory";
-import { useBoardTexts } from "./BoardTextContext";
 
 type StoredScene = {
   elements?: unknown[];
@@ -45,7 +44,6 @@ export function ExcalidrawBoard({
   contextSlug = "visiblevibe",
   title = "VisibleVibe-Methode",
 }: ExcalidrawBoardProps) {
-  const { setTexts } = useBoardTexts();
   const [Excalidraw, setExcalidraw] = useState<ComponentType<ExcalidrawProps> | null>(null);
   const [initialData, setInitialData] = useState<StoredScene | null>(null);
   const [ready, setReady] = useState(false);
@@ -80,7 +78,6 @@ export function ExcalidrawBoard({
         if (!cancelled) {
           currentScene.current = localScene;
           setInitialData(localScene);
-          setTexts(textsFromElements(localScene?.elements));
           setReady(true);
         }
         return;
@@ -102,7 +99,6 @@ export function ExcalidrawBoard({
         currentScene.current = scene;
         setBoardId(existing.id);
         setInitialData(scene);
-        setTexts(textsFromElements(scene.elements));
         setReady(true);
         return;
       }
@@ -131,7 +127,6 @@ export function ExcalidrawBoard({
         setBoardId(created.id);
         setInitialData(created.scene_data as StoredScene);
       }
-      setTexts(textsFromElements(scene.elements));
       setReady(true);
     }
 
@@ -141,7 +136,7 @@ export function ExcalidrawBoard({
       cancelled = true;
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
     };
-  }, [contextSlug, kind, setTexts, storageKey, title]);
+  }, [contextSlug, kind, storageKey, title]);
 
   const persistScene = useCallback(
     async (scene: StoredScene) => {
@@ -225,11 +220,10 @@ export function ExcalidrawBoard({
 
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
       saveTimer.current = window.setTimeout(() => {
-        setTexts(textsFromElements(elements));
         void persistScene(scene);
       }, 700);
     },
-    [persistScene, setTexts],
+    [persistScene],
   );
 
   async function resetBoard() {

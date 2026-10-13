@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "interaktive-lernaufgabe"
 order: 4
-status: "published"
+status: draft
 summary: "Lernende bringen stabile Alltagsvorstellungen mit — aber nicht jede falsche Antwort ist eine Fehlvorstellung."
 ---
 

@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "unterrichts-mikrotool"
 order: 12
-status: "published"
+status: draft
 summary: "Eine einzelne HTML-Datei ist die einfachste Form einer Website — jeder Browser öffnet sie direkt."
 ---
 

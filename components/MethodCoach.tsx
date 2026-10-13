@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MarkdownBody } from "./MarkdownBody";
 import { VideoEmbed } from "./VideoEmbed";
-import { useBoardTexts } from "./BoardTextContext";
 import type { ContentStatus, MethodTask } from "@/lib/types";
 
 export type MethodCoachStep = {
   slug: string;
   title: string;
+  heading?: string;
   goal?: string;
   summary: string;
   body: string;
@@ -25,20 +25,6 @@ export type MethodCoachPeer = {
   status: ContentStatus;
 };
 
-function clip(text: string, max = 88) {
-  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
-}
-
-function localAdapt(task: MethodTask, quotes: string[]) {
-  const action = task.board ?? "Mach den nächsten sichtbaren Schritt auf dem Board.";
-  return [
-    "Ausgehend von dem, was du bereits notiert hast:",
-    ...quotes.slice(0, 4).map((quote) => `• ${clip(quote, 92)}`),
-    "",
-    action,
-  ].join("\n");
-}
-
 export function MethodCoach({
   step,
   steps,
@@ -47,10 +33,11 @@ export function MethodCoach({
   steps: MethodCoachPeer[];
 }) {
   const router = useRouter();
-  const { texts } = useBoardTexts();
   const [taskIndex, setTaskIndex] = useState(0);
-  const [adapted, setAdapted] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    setTaskIndex(0);
+  }, [step.slug]);
 
   const tasks = useMemo<MethodTask[]>(() => {
     if (step.tasks.length) return step.tasks;
@@ -66,15 +53,16 @@ export function MethodCoach({
   }, [step]);
 
   const task = tasks[Math.min(taskIndex, tasks.length - 1)];
+  const guided = Boolean(task.question);
+  const prompt = task.question ?? task.title;
   const phaseIndex = steps.findIndex((item) => item.slug === step.slug);
   const previousPhase = phaseIndex > 0 ? steps[phaseIndex - 1] : null;
   const nextPhase = phaseIndex >= 0 && phaseIndex < steps.length - 1 ? steps[phaseIndex + 1] : null;
-  const quotes = texts.slice(0, 4);
   const lastTask = taskIndex >= tasks.length - 1;
+  const whyThisStep = [step.goal, step.body].filter(Boolean).join("\n\n");
 
   function goToTask(index: number) {
     setTaskIndex(index);
-    setAdapted(null);
   }
 
   function goNext() {
@@ -90,105 +78,39 @@ export function MethodCoach({
       goToTask(taskIndex - 1);
       return;
     }
-    if (previousPhase) router.push(`/design/visiblevibe/${previousPhase.slug}`);
-  }
-
-  async function adaptToBoard() {
-    if (!quotes.length) return;
-    setBusy(true);
-    setAdapted(localAdapt(task, texts));
-
-    try {
-      const response = await fetch("/api/method/adapt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phase: step.title,
-          task: task.title,
-          why: task.why,
-          board: task.board,
-          text: task.text,
-          coach: task.coach,
-          notes: texts.slice(0, 8),
-        }),
-      });
-
-      if (response.ok) {
-        const data = (await response.json()) as { instruction?: string };
-        if (data.instruction?.trim()) setAdapted(data.instruction.trim());
-      }
-    } catch {
-      // lokale Fassung bleibt
-    } finally {
-      setBusy(false);
+    if (previousPhase) {
+      router.push(`/design/visiblevibe/${previousPhase.slug}`);
+      return;
     }
+    router.push("/design/visiblevibe");
   }
 
   const nextLabel = lastTask
     ? nextPhase
       ? `Weiter zu ${nextPhase.title}`
       : "Fertig"
-    : "Nächste Aufgabe";
+    : "Weiter";
 
   return (
-    <article className="flex flex-col gap-5 text-base leading-relaxed">
-      <header>
-        <p className="text-sm text-muted">
-          Phase {phaseIndex + 1} von {steps.length}
-        </p>
-        <h1 className="mt-1 text-3xl font-semibold tracking-tight">{step.title}</h1>
-        {step.goal ? <p className="mt-3 text-[1.05rem] leading-relaxed text-ink/85">{step.goal}</p> : null}
-      </header>
+    <article className="flex flex-col gap-8 text-base leading-relaxed">
+      <h1 className="text-[1.65rem] font-semibold tracking-tight leading-snug">{prompt}</h1>
 
-      {step.body ? (
-        <div className="text-[0.95rem] leading-relaxed text-ink/80 [&_.prose]:text-[0.95rem] [&_.prose]:max-w-none [&_.prose]:leading-relaxed">
-          <MarkdownBody content={step.body} />
-        </div>
-      ) : null}
-
-      <div>
-        <p className="text-sm font-medium text-ink">
-          Aufgabe {taskIndex + 1} von {tasks.length}
-        </p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {tasks.map((item, index) => {
-            const current = index === taskIndex;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => goToTask(index)}
-                className={`rounded-md border-2 px-2.5 py-1 text-sm ${
-                  current
-                    ? "border-ink bg-fhnw font-medium"
-                    : index < taskIndex
-                      ? "border-ink/40 bg-white"
-                      : "border-ink/20 bg-white text-muted"
-                }`}
-              >
-                {index + 1}. {item.title}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {task.why ? (
+      {!guided && task.why ? (
         <p className="border-l-4 border-fhnw pl-3 text-[0.95rem] leading-relaxed text-ink/85">{task.why}</p>
       ) : null}
 
-      {adapted ? (
-        <p className="whitespace-pre-wrap leading-relaxed">{adapted}</p>
-      ) : task.text ? (
+      {!guided && task.text ? (
         <div className="[&_.prose]:max-w-none [&_.prose]:text-base [&_.prose]:leading-relaxed [&_.prose_li]:my-1 [&_.prose_p]:my-2 [&_.prose_strong]:font-semibold">
           <MarkdownBody content={task.text} />
         </div>
       ) : null}
 
       {task.board ? (
-        <div className="rounded-md border-2 border-ink bg-fhnw px-4 py-3">
+        <div className="rounded-md border-2 border-ink bg-fhnw px-4 py-4">
           <p className="text-xs font-semibold uppercase tracking-wide">Jetzt auf dem Board</p>
-          <p className="mt-1.5 leading-relaxed">{task.board}</p>
+          <div className="mt-2 [&_.prose]:max-w-none [&_.prose]:text-[1.05rem] [&_.prose]:leading-relaxed [&_.prose_p]:my-2 [&_.prose_p:first-child]:mt-0 [&_.prose_p:last-child]:mb-0">
+            <MarkdownBody content={task.board} />
+          </div>
         </div>
       ) : null}
 
@@ -199,31 +121,26 @@ export function MethodCoach({
         </p>
       ) : null}
 
-      {quotes.length ? (
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted">Von deinem Board</p>
-          <ul className="mt-2 space-y-1.5 text-sm text-ink/80">
-            {quotes.map((quote) => (
-              <li key={quote}>«{clip(quote, 110)}»</li>
-            ))}
-          </ul>
-          <button
-            type="button"
-            onClick={() => (adapted ? setAdapted(null) : void adaptToBoard())}
-            className="mt-2 text-sm underline underline-offset-2"
-            disabled={busy}
-          >
-            {busy ? "Schärfe die Anleitung …" : adapted ? "Originalanleitung anzeigen" : "Anleitung an mein Board anpassen"}
-          </button>
-        </div>
-      ) : (
-        <p className="text-sm text-muted">
-          Sobald Text auf dem Board steht, kannst du die nächste Anleitung daran anpassen.
-        </p>
-      )}
+      {guided && task.text ? (
+        <details className="text-sm">
+          <summary className="cursor-pointer font-medium text-ink/80">Beispiel</summary>
+          <div className="mt-3 [&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose]:leading-relaxed [&_.prose_p]:my-2">
+            <MarkdownBody content={task.text} />
+          </div>
+        </details>
+      ) : null}
+
+      {whyThisStep ? (
+        <details className="text-sm">
+          <summary className="cursor-pointer font-medium text-ink/80">Wozu dieser Schritt?</summary>
+          <div className="mt-3 [&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose]:leading-relaxed [&_.prose_p]:my-2">
+            <MarkdownBody content={whyThisStep} />
+          </div>
+        </details>
+      ) : null}
 
       {step.video ? (
-        <details className="border-t border-ink/15 pt-3">
+        <details>
           <summary className="cursor-pointer text-sm font-medium">Video zu diesem Schritt</summary>
           <div className="mt-3">
             <VideoEmbed url={step.video} />
@@ -232,14 +149,14 @@ export function MethodCoach({
       ) : null}
 
       <div className="flex items-center justify-between gap-3 pt-1">
-        <button
-          type="button"
-          onClick={goBack}
-          disabled={taskIndex === 0 && !previousPhase}
-          className="text-sm underline underline-offset-2 disabled:text-muted disabled:no-underline"
-        >
+        <button type="button" onClick={goBack} className="text-sm underline underline-offset-2">
           Zurück
         </button>
+        {tasks.length > 1 ? (
+          <p className="text-sm text-muted">
+            {taskIndex + 1} von {tasks.length}
+          </p>
+        ) : null}
         <button
           type="button"
           onClick={goNext}
@@ -251,6 +168,12 @@ export function MethodCoach({
       </div>
 
       <nav className="flex flex-wrap gap-1 border-t border-ink/15 pt-4">
+        <Link
+          href="/design/visiblevibe"
+          className="rounded px-2 py-1 text-xs text-muted hover:bg-fhnw-soft hover:text-ink"
+        >
+          Start
+        </Link>
         {steps.map((item) => {
           const current = item.slug === step.slug;
           return (

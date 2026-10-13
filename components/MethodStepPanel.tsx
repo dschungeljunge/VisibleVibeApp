@@ -13,6 +13,7 @@ export function MethodStepPanel({
       step={{
         slug: step.slug,
         title: step.title,
+        heading: step.heading,
         goal: step.goal,
         summary: step.summary,
         body: step.body,

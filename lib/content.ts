@@ -9,6 +9,7 @@ import {
   type ContentStatus,
   type ContentType,
   type LearnCategory,
+  type LearnFormat,
   type MethodTask,
 } from "./types";
 
@@ -18,6 +19,7 @@ export type {
   ContentStatus,
   ContentType,
   LearnCategory,
+  LearnFormat,
   MethodTask,
 } from "./types";
 
@@ -33,6 +35,10 @@ function isStatus(value: unknown): value is ContentStatus {
 
 function isCategory(value: unknown): value is LearnCategory {
   return value === "pedagogy" || value === "technology" || value === "usability";
+}
+
+function isFormat(value: unknown): value is LearnFormat {
+  return value === "article" || value === "lab";
 }
 
 function walkMarkdownFiles(dir: string): string[] {
@@ -85,6 +91,7 @@ function parseTasks(value: unknown): MethodTask[] | undefined {
     tasks.push({
       id,
       title,
+      question: asTrimmedString(rec.question),
       why: asTrimmedString(rec.why),
       board: asTrimmedString(rec.board),
       coach: asTrimmedString(rec.coach),
@@ -111,6 +118,7 @@ function parseDocument(filePath: string): ContentDocument | null {
   return {
     slug,
     title: typeof data.title === "string" ? data.title : slug,
+    heading: asTrimmedString(data.heading),
     type: data.type,
     status,
     summary: typeof data.summary === "string" ? data.summary : "",
@@ -118,12 +126,15 @@ function parseDocument(filePath: string): ContentDocument | null {
     body: content.trim(),
     filePath,
     category: isCategory(data.category) ? data.category : undefined,
+    format: isFormat(data.format) ? data.format : undefined,
+    lab: asTrimmedString(data.lab),
     parent: typeof data.parent === "string" && data.parent.trim() ? data.parent.trim() : undefined,
     project:
       typeof data.project === "string" && data.project.trim() ? data.project.trim() : undefined,
     video: typeof data.video === "string" && data.video.trim() ? data.video.trim() : undefined,
     goal: typeof data.goal === "string" && data.goal.trim() ? data.goal.trim() : undefined,
     tasks: parseTasks(data.tasks),
+    kind: data.kind === "intro" ? "intro" : undefined,
   };
 }
 
@@ -155,6 +166,14 @@ export function getPublishedDocuments(type?: ContentType): ContentDocument[] {
 
 export function getDocument(type: ContentType, slug: string): ContentDocument | undefined {
   return getVisibleDocuments(type).find((doc) => doc.slug === slug);
+}
+
+export function getMethodPhases(): ContentDocument[] {
+  return getVisibleDocuments("visiblevibe-step").filter((doc) => doc.kind !== "intro");
+}
+
+export function getMethodIntro(): ContentDocument | undefined {
+  return getVisibleDocuments("visiblevibe-step").find((doc) => doc.kind === "intro");
 }
 
 export function getLearnDocument(slug: string): ContentDocument | undefined {

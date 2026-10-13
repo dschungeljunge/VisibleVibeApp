@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { BoardErrorBoundary } from "./BoardErrorBoundary";
-import { BoardTextProvider } from "./BoardTextContext";
 import { ExcalidrawBoard } from "./ExcalidrawBoard";
 
 const STORAGE_KEY = "visiblevibe.method.sidebarPx";
@@ -77,7 +76,6 @@ export function MethodShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <BoardTextProvider>
       <div className="flex h-[calc(100dvh-3.75rem)] flex-col lg:flex-row">
         <aside
           className="max-h-[42%] w-full overflow-y-auto border-b-2 border-ink bg-white lg:max-h-none lg:h-full lg:w-[var(--method-sidebar)] lg:shrink-0 lg:border-b-0"
@@ -105,6 +103,5 @@ export function MethodShell({ children }: { children: ReactNode }) {
           </BoardErrorBoundary>
         </section>
       </div>
-    </BoardTextProvider>
   );
 }

@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "usability"
 project: "unterrichts-mikrotool"
 order: 27
-status: "published"
+status: draft
 summary: "Kontrast, Schriftgrösse und Anordnung steuern, was zuerst und aus Distanz wahrgenommen wird."
 ---
 

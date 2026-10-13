@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "interaktive-lernaufgabe"
 order: 3
-status: "published"
+status: draft
 summary: "Lernziele werden nutzbar, wenn sie eine beobachtbare Denkhandlung benennen."
 ---
 

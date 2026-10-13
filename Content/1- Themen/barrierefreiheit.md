@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "usability"
 project: "interaktive-lernaufgabe"
 order: 29
-status: "published"
+status: draft
 summary: "Barrierefreie Gestaltung geht von der Vielfalt der Nutzenden als Normalfall aus."
 ---
 

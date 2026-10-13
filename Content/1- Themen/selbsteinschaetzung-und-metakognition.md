@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "interaktive-lernaufgabe"
 order: 7
-status: "published"
+status: draft
 summary: "Erst Richtigkeit und Sicherheit zusammen zeigen, ob jemand weiss, rät oder irrt."
 ---
 

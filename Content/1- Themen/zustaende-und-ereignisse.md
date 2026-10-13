@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "technology"
 project: "unterrichts-mikrotool"
 order: 14
-status: "published"
+status: draft
 summary: "Denken in Zuständen verhindert parallele Countdowns, negative Anzeigen und Sackgassen."
 ---
 

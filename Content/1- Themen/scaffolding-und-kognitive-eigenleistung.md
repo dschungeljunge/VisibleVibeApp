@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "ki-lernbegleitung"
 order: 9
-status: "published"
+status: draft
 summary: "Gute Unterstützung lässt den entscheidenden Denkschritt bei den Lernenden."
 ---
 

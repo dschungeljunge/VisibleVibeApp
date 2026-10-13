@@ -5,7 +5,7 @@ type: "learn-topic"
 category: "pedagogy"
 project: "lernspuren-sichtbar-machen"
 order: 8
-status: "published"
+status: draft
 summary: "Digitale Werkzeuge erfassen Spuren von Lernhandlungen, nicht den Lernstand selbst."
 ---
 

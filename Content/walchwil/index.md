@@ -15,6 +15,6 @@ participants:
 
 ## So laufen die Online-Termine
 
-**Impulse asynchron.** Mindestens eine Woche vor dem Live-Termin liegen hier kurze Videos: ein, zwei oder drei Perspektiven, oft mit Bildschirmaufnahme. Den Referatsteil schaut ihr in Ruhe, bevor wir uns treffen.
+**Vorbereitung und Selbststudium.** Die verlinkten Beiträge und Videos geben euch Impulse für eure eigene Idee. Von 17.00 bis 17.30 Uhr arbeitet ihr selbstständig an der Vorbereitung oder am eigenen Vorhaben.
 
-**Live donnerstags ab 17.30 Uhr.** Beratung und Support an euren eigenen Apps. Den Vortrag müsst ihr nicht noch einmal hören.
+**Gemeinsam ab 17.30 Uhr.** Peter kommt um 17.30 Uhr dazu. Bis 18.10 Uhr vertiefen wir die Impulse, besprechen Fragen und denken gemeinsam an einem Beispiel weiter. Von 18.10 bis 18.30 Uhr ist Zeit für individuelle Beratung; parallel könnt ihr selbstständig weiterarbeiten.

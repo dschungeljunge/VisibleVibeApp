@@ -52,6 +52,16 @@ function SessionHeader({
       <h2 className="mt-2 text-2xl font-semibold tracking-tight">{session.title}</h2>
       <p className="mt-2 text-sm text-ink/70">{session.when}</p>
       {session.format ? <p className="mt-1 text-sm text-ink/70">{session.format}</p> : null}
+      {session.slug === "online-1" ? (
+        <a
+          href="https://teams.microsoft.com/meet/318151834530619?p=MMbFvJioHVYpMYPjX1"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex rounded-lg border-2 border-ink bg-fhnw px-4 py-2 font-semibold transition hover:bg-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+        >
+          An der Teams-Sitzung teilnehmen
+        </a>
+      ) : null}
       {session.goal ? (
         <p className="mt-4 leading-relaxed">{session.goal}</p>
       ) : session.summary ? (
@@ -109,7 +119,7 @@ function ExpandedSessionCard({
   index: number;
   participants: string[];
 }) {
-  const showMedia = session.kind === "online" || session.kind === "prep";
+  const showMedia = (session.kind === "online" || session.kind === "prep") && session.videos.length > 0;
 
   return (
     <SketchBox className="bg-white p-8 sm:p-10">
@@ -122,10 +132,22 @@ function ExpandedSessionCard({
           </h3>
           <p className="mt-3 leading-relaxed text-ink/80">
             {session.kind === "online"
-              ? "Kurze Videos, mindestens eine Woche vor dem Live-Termin. Den Referatsteil schaut ihr vorher — am Donnerstag ab 17.30 Uhr geht es um eure Apps."
+              ? "Videos zur Vorbereitung und zum selbstständigen Weiterarbeiten. Im gemeinsamen Austausch ab 17.30 Uhr vertiefen wir die Impulse und besprechen eure Fragen."
               : "Kurzes Video zu dieser Seite und zum Weiterarbeiten. Wenn Fragen auftauchen, klären wir sie gemeinsam — auch mit Vorzeigen direkt hier."}
           </p>
           <ImpulseVideos videos={session.videos} embedded />
+          {session.slug === "online-1" ? (
+            <p className="mt-6 text-sm leading-relaxed text-ink/80">
+              Weitere Informationen und Anregungen findet ihr in den Blogbeiträgen{" "}
+              <Link href="/learn/app-idee-fuenf-fragen" className="underline underline-offset-4">
+                zur App-Idee
+              </Link>{" "}
+              und{" "}
+              <Link href="/learn/toolbox-zusammenstellen" className="underline underline-offset-4">
+                zur Toolbox
+              </Link>.
+            </p>
+          ) : null}
         </section>
       ) : null}
 
